@@ -25,12 +25,11 @@ int main(int argc, char **argv)
         }
     }
 
-    // XXX: this can overflow (if conversion does not fit in 2 chars)
-    sprintf(buf, "%02X", toc[0]);
-    sprintf(buf+strlen(buf), "%02X", toc[1]);
+    snprintf(buf, 3, "%02X", toc[0]);
+    snprintf(buf+strlen(buf), 3, "%02X", toc[1]);
 
     for(int i=2; i<TOC_MAX_LEN; i++) {
-        sprintf(buf+strlen(buf), "%08X", toc[i]);
+        snprintf(buf+strlen(buf), 9, "%08X", toc[i]);
     }
 
     unsigned char hash[SHA_DIGEST_LENGTH]; // == 20
