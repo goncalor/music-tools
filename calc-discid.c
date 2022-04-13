@@ -25,11 +25,20 @@ int main(int argc, char **argv)
         }
     }
 
-    snprintf(buf, 3, "%02X", toc[0]);
-    snprintf(buf+strlen(buf), 3, "%02X", toc[1]);
+    if(snprintf(buf, 3, "%02X", toc[0]) > 2) {
+            puts("ERROR: invalid track number or offset");
+            return 1;
+    }
+    if(snprintf(buf+strlen(buf), 3, "%02X", toc[1]) > 2) {
+            puts("ERROR: invalid track number or offset");
+            return 1;
+    }
 
     for(int i=2; i<TOC_MAX_LEN; i++) {
-        snprintf(buf+strlen(buf), 9, "%08X", toc[i]);
+        if(snprintf(buf+strlen(buf), 9, "%08X", toc[i]) > 8) {
+            puts("ERROR: invalid track number or offset");
+            return 1;
+        }
     }
 
     unsigned char hash[SHA_DIGEST_LENGTH]; // == 20
