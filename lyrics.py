@@ -35,7 +35,8 @@ def extract_lyrics(page):
 
 def normalise(name):
     name = name.lower()
-    name = "".join([a for a in name if a in string.ascii_letters])
+    name = "".join(
+        [a for a in name if a in string.ascii_letters + string.digits])
 
     return name
 
