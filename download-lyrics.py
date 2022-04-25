@@ -40,13 +40,19 @@ def normalise(name):
     return name
 
 
-artist = normalise(sys.argv[1])
-title = normalise(sys.argv[2])
+def download_lyrics(artist, title):
+    artist = normalise(artist)
+    title = normalise(title)
 
-url = "{}{}/{}.html".format(BASE_URL, artist, title)
+    url = "{}{}/{}.html".format(BASE_URL, artist, title)
 
-r = requests.get(url, headers={'user-agent': USER_AGENT})
-r.raise_for_status()
+    r = requests.get(url, headers={'user-agent': USER_AGENT})
+    r.raise_for_status()
 
-lyrics = extract_lyrics(r.text)
-print(lyrics)
+    lyrics = extract_lyrics(r.text)
+
+    return lyrics
+
+
+if __name__ == "__main__":
+    print(download_lyrics(sys.argv[1], sys.argv[2]))
