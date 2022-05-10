@@ -21,6 +21,9 @@ for mp3 in sys.argv[1:]:
     except Exception as e:
         logging.error("Failed with error {}".format(e))
         continue
+    if not lyrics:
+        logging.warning("No lyrics found for '{}' by '{}'".format(title, artist))
+        continue
 
     (root, ext) = os.path.splitext(mp3)
     out_path = root + ".txt"

@@ -48,7 +48,8 @@ def download_lyrics(artist, title):
     url = "{}{}/{}.html".format(BASE_URL, artist, title)
 
     r = requests.get(url, headers={'user-agent': USER_AGENT})
-    r.raise_for_status()
+    if r.status_code != 200:
+        return False
 
     lyrics = extract_lyrics(r.text)
 
@@ -56,4 +57,9 @@ def download_lyrics(artist, title):
 
 
 if __name__ == "__main__":
-    print(download_lyrics(sys.argv[1], sys.argv[2]))
+    lyrics = download_lyrics(sys.argv[1], sys.argv[2])
+    if lyrics:
+        print(lyrics)
+    else:
+        print("No lyrics found", file=sys.stderr)
+        sys.exit(-1)
