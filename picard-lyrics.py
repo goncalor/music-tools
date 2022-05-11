@@ -8,7 +8,7 @@ PLUGIN_LICENSE_URL = 'https://www.gnu.org/licenses/gpl-2.0.html'
 
 from picard import config, log
 from picard.track import Track
-from picard.metadata import register_track_metadata_processor
+from picard.file import register_file_post_addition_to_track_processor
 from picard.ui.itemviews import (
     BaseAction,
     register_track_action,
@@ -16,19 +16,18 @@ from picard.ui.itemviews import (
 from .lyrics import download_lyrics
 
 
-# TODO: download lyrics only if track has no lyrics
-def process_track(album, metadata, track, release):
-    # if 'lyrics' in metadata or 'lyrics:description' in metadata:
-    #     return
+def process_file(track, file):
+    if 'lyrics' in file.metadata or 'lyrics:description' in file.metadata:
+        return
 
-    artist = metadata['artist']
-    title = metadata['title']
+    artist = track.metadata['artist']
+    title = track.metadata['title']
     lyrics = download_lyrics(artist, title)
     if not lyrics:
         log.warning('No lyrics found for "{}" by "{}"'.format(title, artist))
         return
 
-    metadata['lyrics:description'] = lyrics
+    file.metadata['lyrics:description'] = lyrics
 
 
 class AddLyrics(BaseAction):
@@ -41,5 +40,6 @@ class AddLyrics(BaseAction):
             track.tagger.window.refresh_metadatabox()
 
 
-register_track_metadata_processor(process_track)
+# if you want to load lyrics to any loaded file, replace with register_file_post_load_processor
+register_file_post_addition_to_track_processor(process_file)
 register_track_action(AddLyrics())
