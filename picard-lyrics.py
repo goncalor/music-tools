@@ -13,6 +13,7 @@ from picard.ui.itemviews import (
     BaseAction,
     register_track_action,
 )
+from picard.util.webbrowser2 import open as browse
 from .lyrics import download_lyrics
 
 
@@ -39,9 +40,18 @@ class AddLyrics(BaseAction):
             track.files[0].metadata.update({'lyrics:description': ' '})
             track.tagger.window.refresh_metadatabox()
 
-# TODO: add action to search for lyrics in browser
+class BrowseLyrics(BaseAction):
+    NAME = 'Search for lyrics on browser'
+
+    def callback(self, objs):
+        for track in (t for t in objs if isinstance(t, Track)):
+            artist = track.metadata['artist']
+            title = track.metadata['title']
+            browse('https://duckduckgo.com/?q={} {} lyrics'.format(artist, title))
+
 # TODO: AddLyrics: open window where to insert lyrics
 
 # if you want to load lyrics to any loaded file, replace with register_file_post_load_processor
 register_file_post_addition_to_track_processor(process_file)
 register_track_action(AddLyrics())
+register_track_action(BrowseLyrics())
