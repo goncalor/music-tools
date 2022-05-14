@@ -6,6 +6,8 @@ PLUGIN_API_VERSIONS = ['2.0']
 PLUGIN_LICENSE = 'GPL-2.0'
 PLUGIN_LICENSE_URL = 'https://www.gnu.org/licenses/gpl-2.0.html'
 
+import time
+import random
 from picard import config, log
 from picard.track import Track
 from picard.file import register_file_post_addition_to_track_processor
@@ -16,11 +18,13 @@ from picard.ui.itemviews import (
 from picard.util.webbrowser2 import open as browse
 from .lyrics import download_lyrics
 
+MAX_DOWNLOAD_DELAY = 3.5
 
 def process_file(track, file):
     if 'lyrics' in file.metadata or 'lyrics:description' in file.metadata:
         return
 
+    time.sleep(random.uniform(0, MAX_DOWNLOAD_DELAY))
     artist = track.metadata['artist']
     title = track.metadata['title']
     lyrics = download_lyrics(artist, title)
