@@ -14,25 +14,38 @@ from picard.file import register_file_post_addition_to_track_processor
 from picard.ui.itemviews import (
     BaseAction,
     register_track_action,
+    register_album_action,
 )
 from picard.util.webbrowser2 import open as browse
 from .lyrics import download_lyrics
 
 MAX_DOWNLOAD_DELAY = 3.5
 
-def process_file(track, file):
+
+def add_lyrics(file):
     if 'lyrics' in file.metadata or 'lyrics:description' in file.metadata:
         return
 
     time.sleep(random.uniform(0, MAX_DOWNLOAD_DELAY))
-    artist = track.metadata['artist']
-    title = track.metadata['title']
+    artist = file.metadata['artist']
+    title = file.metadata['title']
     lyrics = download_lyrics(artist, title)
     if not lyrics:
         log.warning('No lyrics found for "{}" by "{}"'.format(title, artist))
         return
 
     file.metadata['lyrics:description'] = lyrics
+
+
+class AddAlbumLyrics(BaseAction):
+    NAME = 'Auto-add lyrics'
+
+    def callback(self, objs):
+        for album in objs:
+            for file in album.iterfiles():
+                add_lyrics(file)
+
+        album.tagger.window.refresh_metadatabox()
 
 
 class AddLyrics(BaseAction):
@@ -61,7 +74,8 @@ class BrowseLyrics(BaseAction):
 # TODO: AddLyrics: open window where to insert lyrics
 
 # if you want to load lyrics to any loaded file, replace with register_file_post_load_processor
-register_file_post_addition_to_track_processor(process_file)
+# register_file_post_addition_to_track_processor(process_file)
 # TODO: make this a file action instead, there's no point in adding lyrics to tracks
 register_track_action(AddLyrics())
 register_track_action(BrowseLyrics())
+register_album_action(AddAlbumLyrics())
