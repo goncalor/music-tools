@@ -1,5 +1,6 @@
+PLUGIN_NAME="lazy-lyrics"
 TMP=$(mktemp -d -p .)
-DIR="$TMP/lyrics"
+DIR="$TMP/$PLUGIN_NAME"
 mkdir "$DIR"
 
 cp lyrics.py "$DIR"
@@ -8,7 +9,7 @@ touch "$DIR/README"
 
 pwd="$PWD"
 cd "$TMP"
-zip - lyrics/* > "$pwd/lyrics.zip"
+zip - "$PLUGIN_NAME"/* > "$pwd/$PLUGIN_NAME.zip"
 
 cd "$pwd"
 rm -rf "$TMP"

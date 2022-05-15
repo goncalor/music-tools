@@ -1,9 +1,9 @@
-PLUGIN_NAME = 'lyrics'
+PLUGIN_NAME = 'Lazy Lyrics'
 PLUGIN_AUTHOR = 'goncalor'
 PLUGIN_DESCRIPTION = 'Fetch lyrics from AZLyrics.com'
-PLUGIN_VERSION = '0.1'
+PLUGIN_VERSION = '0.2'
 PLUGIN_API_VERSIONS = ['2.0']
-PLUGIN_LICENSE = 'GPL-2.0'
+PLUGIN_LICENSE = 'GPL-2.0-or-later'
 PLUGIN_LICENSE_URL = 'https://www.gnu.org/licenses/gpl-2.0.html'
 
 import time
