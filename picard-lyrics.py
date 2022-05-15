@@ -37,18 +37,18 @@ def add_lyrics(file):
     file.metadata['lyrics:description'] = lyrics
 
 
-class AddAlbumLyrics(BaseAction):
+class AddLyrics(BaseAction):
     NAME = 'Auto-add lyrics'
 
     def callback(self, objs):
-        for album in objs:
-            for file in album.iterfiles():
+        for album_or_track in objs:
+            for file in album_or_track.iterfiles():
                 add_lyrics(file)
 
-        album.tagger.window.refresh_metadatabox()
+        album_or_track.tagger.window.refresh_metadatabox()
 
 
-class AddLyrics(BaseAction):
+class AddEmptyLyrics(BaseAction):
     NAME = 'Add lyrics tag'
 
     def callback(self, objs):
@@ -76,6 +76,7 @@ class BrowseLyrics(BaseAction):
 # if you want to load lyrics to any loaded file, replace with register_file_post_load_processor
 # register_file_post_addition_to_track_processor(process_file)
 # TODO: make this a file action instead, there's no point in adding lyrics to tracks
+register_track_action(AddEmptyLyrics())
 register_track_action(AddLyrics())
+register_album_action(AddLyrics())
 register_track_action(BrowseLyrics())
-register_album_action(AddAlbumLyrics())
