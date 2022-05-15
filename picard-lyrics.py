@@ -17,6 +17,8 @@ from picard.ui.itemviews import (
     register_album_action,
 )
 from picard.util.webbrowser2 import open as browse
+from PyQt5.QtWidgets import QInputDialog
+
 from .lyrics import download_lyrics
 
 MAX_DOWNLOAD_DELAY = 3.5
@@ -61,7 +63,7 @@ class AddEmptyLyrics(BaseAction):
 
 
 class BrowseLyrics(BaseAction):
-    NAME = 'Search for lyrics on browser'
+    NAME = 'Browse for lyrics'
 
     def callback(self, objs):
         for track in (t for t in objs if isinstance(t, Track)):
@@ -70,13 +72,17 @@ class BrowseLyrics(BaseAction):
             browse('https://duckduckgo.com/?q={} {} lyrics'.format(
                 artist, title))
 
+            if not len(track.files):
+                return
+            # TODO: open browser after dialog, not the other way around
+            text, ok = QInputDialog.getMultiLineText(None, 'Add lyrics',
+                                                     'Lyrics:')
+            if ok:
+                track.files[0].metadata.update({'lyrics:description': text})
+                track.tagger.window.refresh_metadatabox()
 
-# TODO: AddLyrics: open window where to insert lyrics
 
-# if you want to load lyrics to any loaded file, replace with register_file_post_load_processor
-# register_file_post_addition_to_track_processor(process_file)
-# TODO: make this a file action instead, there's no point in adding lyrics to tracks
-register_track_action(AddEmptyLyrics())
 register_track_action(AddLyrics())
 register_album_action(AddLyrics())
 register_track_action(BrowseLyrics())
+# register_track_action(AddEmptyLyrics())
