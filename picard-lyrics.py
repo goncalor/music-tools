@@ -75,8 +75,9 @@ class BrowseLyrics(BaseAction):
             if not len(track.files):
                 return
             # TODO: open browser after dialog, not the other way around
-            text, ok = QInputDialog.getMultiLineText(None, 'Add lyrics',
-                                                     'Lyrics:')
+            text, ok = QInputDialog.getMultiLineText(
+                None, 'Add lyrics',
+                'Lyrics for "{}" by "{}":'.format(title, artist))
             if ok:
                 track.files[0].metadata.update({'lyrics:description': text})
                 track.tagger.window.refresh_metadatabox()
