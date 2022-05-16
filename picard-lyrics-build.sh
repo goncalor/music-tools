@@ -5,7 +5,7 @@ mkdir "$DIR"
 
 cp lyrics.py "$DIR"
 cp picard-lyrics.py "$DIR/__init__.py"
-touch "$DIR/README"
+cp README.md "$DIR/README"
 
 pwd="$PWD"
 cd "$TMP"
