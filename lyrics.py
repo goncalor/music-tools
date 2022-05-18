@@ -37,6 +37,7 @@ def normalise(name):
     name = name.lower()
     name = "".join(
         [a for a in name if a in string.ascii_letters + string.digits])
+    name = name if not name.startswith("the ") else name.lstrip("the ") 
 
     return name
 
@@ -47,7 +48,7 @@ def download_lyrics(artist, title):
 
     url = "{}{}/{}.html".format(BASE_URL, artist, title)
 
-    r = requests.get(url, headers={'user-agent': USER_AGENT})
+    r = requests.get(url, headers={"user-agent": USER_AGENT})
     if r.status_code != 200:
         return False
 
