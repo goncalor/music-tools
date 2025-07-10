@@ -6,7 +6,7 @@ A set of tools to work with and manage music files.
 `picard-lyrics.py`
 ------------------
 
-Lazy Lyrics [MusicBrainz Picard][picard] plugin to automatically add lyrics to songs. Build the plugin with `picard-lyrics-build.sh`, or download it ready to install from [releases][releases].
+Lazy Lyrics [MusicBrainz Picard][picard] plugin to automatically add lyrics to songs. Build the plugin with `picard-lyrics-build.sh`, or download it ready to install from [releases][releases]. Before you install the plugin, ensure you have the [`lxml`][lxml] Python module installed.
 
 The plugin adds an "Auto-add lyrics" action to albums and tracks on Picard. Clicking this action attempts to automatically find and add lyrics for the selected tracks.
 
@@ -20,3 +20,4 @@ Download lyrics for a set of ID3 tagged files and save them to `.txt` files.
 
 [picard]: https://picard.musicbrainz.org/
 [releases]: https://github.com/goncalor/music-tools/releases
+[lxml]: https://lxml.de/installation.html
