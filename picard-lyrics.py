@@ -28,7 +28,7 @@ def add_lyrics(file):
     if 'lyrics' in file.metadata or 'lyrics:description' in file.metadata:
         return
 
-    time.sleep(random.uniform(0, MAX_DOWNLOAD_DELAY))
+    time.sleep(random.uniform(1, MAX_DOWNLOAD_DELAY))
     artist = file.metadata['artist']
     title = file.metadata['title']
     lyrics = download_lyrics(artist, title)
