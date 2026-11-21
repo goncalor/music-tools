@@ -39,7 +39,7 @@ class AddLyrics(BaseAction):
     def callback(self, objs):
         for album_or_track in objs:
             for file in album_or_track.iterfiles():
-                add_lyrics(file)
+                add_lyrics(self.api, file)
 
         album_or_track.tagger.window.refresh_metadatabox()
 
