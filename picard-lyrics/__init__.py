@@ -1,15 +1,10 @@
-
+import time
+import random
 from picard.plugin3.api import PluginApi
-
 from picard.plugin3.api import (
     BaseAction,
     Track,
 )
-
-import time
-import random
-
-
 from picard.util.webbrowser2 import open as browse
 from PyQt6.QtWidgets import QInputDialog
 
@@ -77,7 +72,6 @@ class BrowseLyrics(BaseAction):
                 track.tagger.window.refresh_metadatabox()
 
 
-# register_track_action(AddEmptyLyrics())
 
 
 def enable(api: PluginApi):
@@ -85,3 +79,4 @@ def enable(api: PluginApi):
     api.register_track_action(AddLyrics)
     api.register_album_action(AddLyrics)
     api.register_track_action(BrowseLyrics)
+    # api.register_track_action(AddEmptyLyrics)
