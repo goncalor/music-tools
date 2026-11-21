@@ -1,7 +1,7 @@
 uuid = "83b140fa-bb98-402f-8cb1-c1bd197861b8"
 name = "Lazy Lyrics"
 description = "Fetch lyrics from AZLyrics.com"
-api = ["2.0"]
+api = ["3.0"]
 authors = ["goncalor"]
 license = "GPL-2.0-or-later"
 license_url = "https://www.gnu.org/licenses/gpl-2.0.html"

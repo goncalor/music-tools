@@ -1,30 +1,24 @@
-PLUGIN_NAME = 'Lazy Lyrics'
-PLUGIN_AUTHOR = 'goncalor'
-PLUGIN_DESCRIPTION = 'Fetch lyrics from AZLyrics.com'
-PLUGIN_VERSION = '0.2'
-PLUGIN_API_VERSIONS = ['2.0']
-PLUGIN_LICENSE = 'GPL-2.0-or-later'
-PLUGIN_LICENSE_URL = 'https://www.gnu.org/licenses/gpl-2.0.html'
+
+from picard.plugin3.api import PluginApi
+
+from picard.plugin3.api import (
+    BaseAction,
+    Track,
+)
 
 import time
 import random
-from picard import config, log
-from picard.track import Track
-from picard.file import register_file_post_addition_to_track_processor
-from picard.ui.itemviews import (
-    BaseAction,
-    register_track_action,
-    register_album_action,
-)
+
+
 from picard.util.webbrowser2 import open as browse
-from PyQt5.QtWidgets import QInputDialog
+from PyQt6.QtWidgets import QInputDialog
 
 from .lyrics import download_lyrics
 
 MAX_DOWNLOAD_DELAY = 3.5
 
 
-def add_lyrics(file):
+def add_lyrics(api, file):
     if 'lyrics' in file.metadata or 'lyrics:description' in file.metadata:
         return
 
@@ -33,14 +27,14 @@ def add_lyrics(file):
     title = file.metadata['title']
     lyrics = download_lyrics(artist, title)
     if not lyrics:
-        log.warning('No lyrics found for "{}" by "{}"'.format(title, artist))
+        api.logger.warning('No lyrics found for "{}" by "{}"'.format(title, artist))
         return
 
     file.metadata['lyrics:description'] = lyrics
 
 
 class AddLyrics(BaseAction):
-    NAME = 'Auto-add lyrics'
+    TITLE = "Auto-add lyrics"
 
     def callback(self, objs):
         for album_or_track in objs:
@@ -51,7 +45,7 @@ class AddLyrics(BaseAction):
 
 
 class AddEmptyLyrics(BaseAction):
-    NAME = 'Add lyrics tag'
+    TITLE = "Add lyrics tag"
 
     def callback(self, objs):
         for track in (t for t in objs if isinstance(t, Track)):
@@ -63,7 +57,7 @@ class AddEmptyLyrics(BaseAction):
 
 
 class BrowseLyrics(BaseAction):
-    NAME = 'Browse for lyrics'
+    TITLE = "Browse for lyrics"
 
     def callback(self, objs):
         for track in (t for t in objs if isinstance(t, Track)):
@@ -83,7 +77,11 @@ class BrowseLyrics(BaseAction):
                 track.tagger.window.refresh_metadatabox()
 
 
-register_track_action(AddLyrics())
-register_album_action(AddLyrics())
-register_track_action(BrowseLyrics())
 # register_track_action(AddEmptyLyrics())
+
+
+def enable(api: PluginApi):
+    """Called when plugin is enabled."""
+    api.register_track_action(AddLyrics)
+    api.register_album_action(AddLyrics)
+    api.register_track_action(BrowseLyrics)
