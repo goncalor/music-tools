@@ -6,7 +6,7 @@ import requests
 import xml.etree.ElementTree as ET
 
 BASE_URL = "https://www.azlyrics.com/lyrics/"
-USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:98.0) Gecko/20100101 Firefox/98.0"
+USER_AGENT = "Mozilla/5.0 (X11; Linux x86_64; rv:159.0) Gecko/20100101 Firefox/159.0"
 
 
 def extract_lyrics(page):
