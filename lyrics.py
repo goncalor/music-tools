@@ -17,7 +17,7 @@ def extract_lyrics(page):
             lyrics = ET.tostringlist(div, encoding="unicode", method="text")
             lyrics = [s.strip() for s in lyrics]
 
-            tmp = list()
+            # remove empty lines at beginning and end
             start = 0
             end = len(lyrics)
             for l in lyrics:
@@ -52,7 +52,7 @@ def download_lyrics(artist, title):
     if r.status_code != 200:
         return False
 
-    lyrics = extract_lyrics(r.text)
+    lyrics = extract_lyrics(r.content)
 
     return lyrics
 
